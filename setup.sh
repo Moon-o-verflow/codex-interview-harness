@@ -19,9 +19,9 @@ copy() {
 }
 
 copy "$SRC/AGENTS.md" AGENTS.md
-for f in coach prd impl; do copy "$SRC/roles/$f.md" "roles/$f.md"; done
-for s in change-procedure doc-split wrap-up; do copy "$SRC/.agents/skills/$s" ".agents/skills/$s"; done
-for t in interview spec tasks; do copy "$SRC/templates/$t.md" "docs/$t.md"; done
+for r in interviewer partner worker reviewer; do copy "$SRC/roles/$r.md" "roles/$r.md"; done
+for t in interview spec decisions tasks; do copy "$SRC/templates/$t.md" "docs/$t.md"; done
+copy "$SRC/templates/batch.md" docs/batches/_template.md
 
 # .gitignore: append missing lines only
 touch .gitignore
@@ -39,7 +39,7 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || git init -q
 git config user.name >/dev/null || git config user.name "candidate"
 git config user.email >/dev/null || git config user.email "candidate@localhost"
 git add -A
-git commit -qm "setup: harness" >/dev/null 2>&1 || echo "커밋할 변경 없음"
+git commit -qm "setup: harness v2" >/dev/null 2>&1 || echo "커밋할 변경 없음"
 git tag -f setup >/dev/null
 
-echo "완료. AGENTS.md의 [TBD] 2곳(납기, 범위)을 채우세요."
+echo "완료. AGENTS.md의 [TBD](데드라인)를 채우세요."

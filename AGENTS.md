@@ -1,64 +1,62 @@
 # AGENTS.md
 
-Read fully before any work. Your session role is in `roles/<role>.md`; on conflict, this file wins.
-Write all replies and docs in Korean.
+Shared rules for every session. Your role is in `roles/<role>.md` — read it right after this file. If the two conflict, this file wins.
+Reply and write all docs in Korean.
 
-## 0. User instruction vs. these rules
-- If a user instruction conflicts with this file or a roles file: do not execute yet. Ask once, stating (a) the conflicting rule, (b) consequences: what breaks, affected files/BR-IDs, risks.
-- If the user still confirms, the user's instruction wins — for that instruction only. Next similar case: ask again.
-- Record every override in the decision log of `docs/spec.md` as `D-n`, type `지시 우선`.
+## 1. User instruction first
+- If a user instruction conflicts with these rules or your role file: before acting, say once which rule it breaks and what follows (affected files, R-nn, risks).
+- If the user confirms, follow it — for that instruction only. Log it in docs/decisions.md as type `지시 우선`.
 
-## 1. Project
+## 2. Project
 - Summary: [B]
 - Core value (must never break): [B]
-- Delivery: demo-ready v1 within [TBD]. Scope = spec [TBD].
-- If any [TBD] remains in this file, ask the user before working.
+- Deadlines: [TBD]
+- If any [TBD] remains, ask the user before working.
 
-## 2. Documents & ownership
+## 3. Documents & ownership
 | File | Holds | Writer |
 |---|---|---|
-| README.md | task original | nobody (never edit) |
-| docs/interview.md | raw 실무자 Q/A (A1, A2…) | user only |
-| docs/spec.md (+ split docs) | BR rules, FR, decision log | prd |
-| docs/tasks.md | phases, tasks, acceptance scenarios | prd; impl edits status only |
-| code | implementation | impl |
-| AGENTS.md [B] | summary, core value, invariants | prd, only when instructed |
-| roles/coach.md [B] | domain checklist | coach, once at setup |
-| roles/impl.md [B] | stack, verify command, banned patterns | impl |
-- Precedence: AGENTS.md > spec > tasks > code. Final word on requirements: spec.
-- Code disagrees with spec → fix code. Spec itself seems wrong → `$change-procedure`.
-- Never edit outside `[B]` in AGENTS.md or roles/*.md.
+| README.md, given data | task original | nobody |
+| docs/interview.md | raw DM transcript | user |
+| docs/spec.md 요구 part | purpose, flows, scope, rules, assumptions, delegated items | interviewer, then partner (beyond 실무자 answers: raise as issue first) |
+| docs/spec.md 기술 part | architecture, core logic, data, contracts, verification, risks | partner |
+| docs/decisions.md | decision log | interviewer, partner |
+| docs/tasks.md | phases, tasks, batches, status | partner |
+| docs/batches/bN.md | batch plan | partner |
+| code | implementation | workers, inside their assigned scope |
+| shared files (dependencies, config, contract types) | | partner |
+- `[B]` in this file: partner writes, after user approval.
 
-## 3. Status tags & evidence
-- 확정: 실무자 stated it. 제안: dev judgment + 1-line reason; enters spec only after user approval. TODO(실무자확인): undecided — never implement. 폐기: keep the number, mark only.
-- Evidence: `[A#]` 실무자 answer, `[D-n]` user decision, `[README]`. No evidence → do not write it; raise a question.
-- Lines starting with `>` in interview.md are user notes, never evidence.
+## 4. Rules & evidence
+- One line per rule: `R-nn rule sentence. (근거)` — 근거 = interview area, README, data, or D-n.
+- Mark only what is not confirmed: `(가정)`, `(미확정)`, `(위임)`.
+- Code that applies a rule carries an `R-nn` comment.
 
-## 4. Invariants
-[B] 2–4 rules. prd proposes after spec is final; user approves.
+## 5. Who decides
+- README or data has the answer → check it yourself; never ask.
+- Business fact or rule → 실무자, via the user.
+- Scope, priority, direction → user.
+- Technical method → partner proposes.
+- Low impact, or a common default exists → apply the default and list it under 가정. Do not ask.
+- 실무자 says "알아서" → mark `(위임)`; bring it to the user with a recommendation.
 
-## 5. Scope
-- Floor: the success scenario runs end-to-end. Ceiling: spec exclusions + evidence rule + delivery time.
-- Excluded items: never build (if the user asks, §0 applies).
+## 6. What goes to the user
+- Hard-to-reverse decisions, scope changes, business rules without evidence, disagreements between agents.
+- Format: 결론 / 쟁점 (선택지 · 대가 · 추천). Short; the user decides.
+- Everything else: decide, record, move on.
 
-## 6. Language
-- Identifiers, code comments: English (Korean allowed in BR-ID comment text).
-- UI text, error messages: Korean, using the 실무자's exact terms (glossary doc if split).
-- Docs: Korean. Commits: Korean or English.
-
-## 7. Stop and report
-- Stop when: a needed rule has no evidence; work touches a TODO area; docs contradict each other or the code; an excluded item seems needed; [TBD] remains; platform/Codex config seems to need changing.
-- Report: blocker / options / cost of each. Never pick one and proceed.
+## 7. Verification
+- Verify at the end of each logical unit, not after every edit.
+- Evidence, not claims: command, exit code, test output.
+- A document gets one consistency check when it is finished.
 
 ## 8. Git
-- One task = one commit: `type(T#): summary [BR-ID]`, type ∈ setup|docs|feat|fix|test|change.
-- Commit before risky changes. Tags: `setup`, `spec-final`, `mvp`, `pre-change-D<n>`. Never push.
+- Never push. Commit message: `<task id>: summary [R-nn]`.
 
 ## 9. Context
-- At each Phase end (a task boundary), tell the user: "컨텍스트 70% 이상이면 지금 /compact 권장". Never compact mid-task.
-- After compact or resume: reread your roles file, then docs/tasks.md.
-- Short outputs: no file echo, no full logs; summarize, detail failures only.
-- Do not reread unchanged files; read only the range you need.
+- Compact only at a task boundary. After compact or resume: reread your role file, then docs/tasks.md.
+- Short output: no file echo, no full logs; detail failures only.
+- Do not reread unchanged files; read only what you need.
 
 ## 10. Never
-- Send task data or files outside; hardcode keys/tokens; modify platform or Codex config; update Codex; edit README.md.
+- Send task data outside; hardcode keys; change platform or Codex settings; update Codex; edit README.md or given data.
